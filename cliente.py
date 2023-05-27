@@ -1,6 +1,7 @@
 class Cliente:
 
-    def __int__(self,nombreCompleto,
+    def __init__(self,
+                nombreCompleto,
                 usuario,
                 password,
                 documento,

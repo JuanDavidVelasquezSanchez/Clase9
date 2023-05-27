@@ -278,6 +278,7 @@ class Ventana1(QMainWindow):
         # Hacemos un letrero para la respuesta 2:
         self.labelRespuesta2 = QLabel("Respuesta de verificacion 2*")
 
+
         #Agregamos el letrero a la siguiente fila:
         self.ladoDerecho.addRow(self.labelRespuesta2)
 
@@ -460,7 +461,6 @@ class Ventana1(QMainWindow):
                 self.nombreCompleto.text() + ";"
                 + self.usuario.text() + ";"
                 + self.password.text() + ";"
-                + self.password2.text() + ";"
                 + self.documento.text() + ";"
                 + self.correo.text() + ";"
                 + self.pregunta1.text() + ";"
@@ -542,7 +542,7 @@ class Ventana1(QMainWindow):
                 #Se para si ya no hay mas registros en el archivo
                 if linea == '':
                     break
-
+                print(lista)
                 #Creamos un objeto tipo cleinte llamado u
                 u = Cliente(
                     lista[0],
@@ -555,7 +555,7 @@ class Ventana1(QMainWindow):
                     lista[7],
                     lista[8],
                     lista[9],
-                    lista[10],
+                    lista[10]
                 )
 
                 #Metemos el objeto en la lista de usuarios
@@ -573,6 +573,8 @@ class Ventana1(QMainWindow):
             for u in usuarios:
                 #comparamos el documetno ingresado
                 #si corresponde con el documento, es el usuario correcto
+                print(u.documento)
+                print(self.documento.text())
                 if u.documento == self.documento.text():
 
                     #Mostramos las preguntas en el formulario
@@ -581,7 +583,7 @@ class Ventana1(QMainWindow):
                     self.pregunta3.setText(u.pregunta3)
 
                     #Indicamos que encontramos el documento
-                    existeDocumento == True
+                    existeDocumento = True
 
                     #Paramos el for
                     break
