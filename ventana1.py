@@ -345,6 +345,11 @@ class Ventana1(QMainWindow):
                                           "margin-top: 40px;"
                                           )
 
+        #Hacemos que el boton botonRecuperar tenga su metodo
+        self.botonRecuperar.clicked.connect(self.accion_botonRecuperar)
+
+
+
         # Agregamos los botones al layout derecho
         self.ladoDerecho.addRow(self.botonBuscar, self.botonRecuperar)
         #---
@@ -355,6 +360,9 @@ class Ventana1(QMainWindow):
 
         #-------------------OJO IMPORTANTE PONER LA FINAL------------
         self.fondo.setLayout(self.horizontal)
+
+
+        #---------------------CONSTRUCCION DE LA VENTANA EMERGENTE--------------------
 
         # Hacemos la ventana de dialogo:
         self.ventanaDialogo = QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
@@ -391,8 +399,6 @@ class Ventana1(QMainWindow):
         # Establecemos el layout de la ventana:
         self.ventanaDialogo.setLayout(self.vertical)
 
-        # variable para controlar que se han ongresado los datos correctos
-        self.datosCorrectos = True
 
 
     #Hacemos el metodo de botonLimpiar:
@@ -413,6 +419,8 @@ class Ventana1(QMainWindow):
     #Metodo del boton registrar
     def accion_botonRegistrar(self):
 
+        # variable para controlar que se han ongresado los datos correctos
+        self.datosCorrectos = True
 
         #Validamos que las passsword sean iguales:
         if (
@@ -486,6 +494,10 @@ class Ventana1(QMainWindow):
 
     #Metodo de boton buscar
     def accion_botonBuscar(self):
+
+        # variable para controlar que se han ongresado los datos correctos
+        self.datosCorrectos = True
+
         #Establecemos el titulo de la ventana
         self.ventanaDialogo.setWindowTitle("Buscar preguntas de validacion")
 
@@ -597,6 +609,142 @@ class Ventana1(QMainWindow):
                                      +self.documento.text())
 
                 #Iniciamos que la ventana de dialogo se va:
+                self.ventanaDialogo.exec_()
+
+    def accion_botonRecuperar(self):
+
+        #variable para controlar que se han ingresado los datos correctos
+        self.datosCorrectos = True
+
+        #Establecemos el titulo de la ventana
+        self.ventanaDialogo.setWindowTitle("Recuperar Contraseña")
+
+        #Validamos que se hayan buscado las preguntas
+        if(
+            self.pregunta1.text() == '' or
+            self.pregunta2.text() == '' or
+            self.pregunta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            #Escribimos el texto explicativo
+            self.mensaje.setText("Para recuperar la contraseña debe"
+                                 "\nbuscar las preguntas de verificacion."
+                                 "\n\nPrimero ingrese su documento y luego"
+                                 "\npresione el boton 'Buscar'")
+
+            #Hacemos que la ventana de dialogo se vea
+            self.ventanaDialogo.exec_()
+
+        #Validemos si se buscanron las preguntas pero no se ingresaron las respuestas
+        if(
+            self.pregunta1.text() != '' and
+            self.respuesta1.text() == '' and
+            self.pregunta2.text() != '' and
+            self.respuesta2.text() == '' and
+            self.pregunta3.text() != '' and
+            self.respuesta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            #Escribimos el texto explicativo
+            self.mensaje.setText("Para recuperar la contraseña debe"
+                                 "\ningresar las respuestas a cada pregunta")
+
+            #Hacemos que la ventana dialogo se vea
+            self.ventanaDialogo.exec_()
+
+        #Si los datos son correctos
+        if (
+            self.datosCorrectos
+        ):
+
+            #Abrimos el archivo en modo lectura
+            self.file = open('datos/clientes.txt', 'rb')
+
+            #Listas vacia para guardar los usuarios
+            usuarios = []
+
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+
+                #Obtenemos del string una lista con 11 datos separados por:
+                lista = linea.split(";")
+
+                #Se para si ya no hay mas registros en el archivo
+                if linea == '':
+                    break
+                #Creamos un objeto tipo cliente llamado u
+                u = Cliente(
+                    lista[0],
+                    lista[1],
+                    lista[2],
+                    lista[3],
+                    lista[4],
+                    lista[5],
+                    lista[6],
+                    lista[7],
+                    lista[8],
+                    lista[9],
+                    lista[10],
+                )
+                #Metemos el objeto en la lista de usuarios
+                usuarios.append(u)
+
+                #Cerramos el archivo
+            self.file.close()
+
+            #En este putno ya tenemos la lista de usuarios con todos los usuarios
+
+            #Variable para controlar si existe el documento
+            existeDocumento = False
+
+            #Definimos las variables para guardar las preguntas
+            resp1 = ''
+            resp2 = ''
+            resp3 = ''
+            passw = ''
+
+            #Buscamos en la lista usuario por usuario si existe la cedula
+            for u in usuarios:
+                #Comparamos el documento ingresado:
+                #si corresponde con el documento, es el usuario correcto
+                if u.documento == self.documento.text():
+                    #Indicamos que encontramos el documento
+                    existeDocumento = True
+                    #Guardamos las respuestas
+                    resp1 = u.respuesta1
+                    resp2 = u.respuesta2
+                    resp3 = u.respuesta3
+                    passw = u.password
+                    #paramos el for
+                    break
+
+            #Verificamos si las respuestas son las correctas
+            #Hacemos que las respuetas sean en la letra minuscula
+            if(
+                #Usamos strip() para borrar espacios y saltos de linea
+                self.respuesta1.text().lower().strip() == resp1.lower().strip() and
+                self.respuesta2.text().lower().strip() == resp2.lower().strip() and
+                self.respuesta3.text().lower().strip() == resp3.lower().strip()
+            ):
+                #limpiamos los campos
+                self.accion_botonLimpiar()
+
+                #Escribimos el texto aplicativo
+                self.mensaje.setText("Contraseña:" + passw)
+
+                #Hacemos que la ventana de dialogo se vea
+                self.ventanaDialogo.exec_()
+
+            else:
+                #Escribimos el texto explicativo
+                self.mensaje.setText("Las respuestas son incorrectas para estas" 
+                                    "\npreguntas de recuperacion de contraseña"
+                                     "\nVuelva a intentarlo.")
+
+
+                #hacemos que la ventana e dialogo se vea
                 self.ventanaDialogo.exec_()
 
 
