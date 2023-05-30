@@ -32,7 +32,7 @@ class Ventana3(QMainWindow):
 
         # hacer que la ventana se vea en el centro
         self.pantalla = self.frameGeometry()
-        self.centro = QDesktopWidget().availableGeometry().Center()
+        self.centro = QDesktopWidget().availableGeometry().center()
         self.pantalla.moveCenter(self.centro)
         self.move(self.pantalla.top())
 
