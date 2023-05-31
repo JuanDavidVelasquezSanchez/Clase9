@@ -9,6 +9,8 @@ from cliente import Cliente
 
 import math
 
+from ventana3 import Ventana3
+
 
 class Ventana2(QMainWindow):
 
@@ -209,6 +211,18 @@ class Ventana2(QMainWindow):
         #Establecemos el metodo para que funcione todos los botones:
         self.botones.idClicked.connect(self.metodo_accionBotones)
 
+        # --------- BOTON FORMA TABULAR ------
+        # hacemos el bton para navegar a la ventana de la tabla de usuarios
+        self.botonFormaTabular = QPushButton("forma tabular")
+        # establecemos el ancho del boton
+        self.botonFormaTabular.setFixedWidth(100)
+        # le ponemos los estilos
+        self.botonFormaTabular.setStyleSheet("background-color: #008B45;" "color: #FFFFFF;" "padding: 10px;" "margin-top: 10px;")
+        # hacemos que el boton continuar tenga su metodo
+        self.botonFormaTabular.clicked.connect(self.metodo_botonFormaTabular)
+        #metemos en el layout vertical el boton forma tabular
+        self.vertical.addWidget(self.botonFormaTabular)
+
         #--------- BOTON VOLVER ------
         #Hacemos el boton volver para devolvernos a la ventana anterior:
         self.botonVolver = QPushButton("Volver")
@@ -242,6 +256,13 @@ class Ventana2(QMainWindow):
         self.hide()
         self.ventanaAnterior.show()
 
+    def metodo_botonFormaTabular(self):
+        self.hide()
+        self.ventana3 = Ventana3(self)
+        self.ventana3.show()
+
+
+
 
 if __name__== '__main__':
 
@@ -252,4 +273,7 @@ if __name__== '__main__':
     ventana2.show()
 
     sys.exit(app.exec_())
+
+
+
 
