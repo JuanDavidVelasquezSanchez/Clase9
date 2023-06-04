@@ -12,11 +12,14 @@ class Ventana3(QMainWindow):
         super(Ventana3, self).__init__(anterior)
         self.ventanaAnterior = anterior
         self.setWindowTitle("Usuarios Registrados")
+
         self.setWindowIcon(QtGui.QIcon('imagenes/bag.png'))
+
         self.ancho = 900
         self.alto = 600
         self.resize(self.ancho, self.alto)
         self.pantalla = self.frameGeometry()
+        
         self.centro = QDesktopWidget().availableGeometry().center()
         self.pantalla.moveCenter(self.centro)
         self.move(self.pantalla.topLeft())
@@ -63,7 +66,7 @@ class Ventana3(QMainWindow):
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
         self.tabla = QTableWidget()
-        
+
         self.tabla.setColumnCount(11)
         self.tabla.setColumnWidth(0, 150)
         self.tabla.setColumnWidth(1, 150)
@@ -76,9 +79,12 @@ class Ventana3(QMainWindow):
         self.tabla.setColumnWidth(8, 150)
         self.tabla.setColumnWidth(9, 150)
         self.tabla.setColumnWidth(10, 150)
+
         self.tabla.setHorizontalHeaderLabels(['Nombre', 'Usuario', 'Password', 'Documento', 'Correo', 'Pregunta 1', 'Respuesta 1', 'Pregunta 2', 'Respuesta 2', 'Pregunta 3', 'Respuesta 3'])
         self.tabla.setRowCount(self.numeroUsuarios)
+
         for u in self.usuarios:
+
             self.tabla.setItem(self.contador, 0, QTableWidgetItem(u.nombreCompleto))
             self.tabla.setItem(self.contador, 1, QTableWidgetItem(u.usuario))
             self.tabla.setItem(self.contador, 2, QTableWidgetItem(u.password))
