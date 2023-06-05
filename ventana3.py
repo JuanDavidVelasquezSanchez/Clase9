@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtGui import QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QLabel, QVBoxLayout, QScrollArea, QTableWidget, \
-    QTableWidgetItem, QPushButton, QApplication
+    QTableWidgetItem, QPushButton, QApplication, QToolBar, QAction
 from PyQt5 import QtGui
+from PyQt5.QtCore import Qt, QSize
 
 from cliente import Cliente
 
@@ -55,8 +56,35 @@ class Ventana3(QMainWindow):
         self.file.close()  # Cerrar el archivo fuera del bucle
 
         self.numeroUsuarios = len(self.usuarios)
+
         self.contador = 0
+
         self.vertical = QVBoxLayout()
+
+        #------- CONSTRUIR EL MENU TOOLBAR ----
+
+        self.toolbar = QToolBar('Main Toolbar')
+        self.toolbar.setIconSize(QSize(16, 16))
+        self.addToolBar(self.toolbar)
+
+        #---delete---
+        self.delete = QAction(QIcon('imagenes/delete.png'), '&Delete', self)
+        self.delete.triggered.connect(self.accion_delete)
+        self.toolbar.addAction(self.delete)
+
+        #---Add---
+        self.add = QAction(QIcon('imagenes/Add.png'), '&Add', self)
+        self.add.triggered.connect(self.accion_add)
+        self.toolbar.addAction(self.add)
+
+        #----Insert----
+        self.insert = QAction(QIcon('imagenes/edit.png'), '&Insert', self)
+        self.insert.triggered.connect(self.accion_insert)
+        self.toolbar.addAction(self.insert)
+
+        #----- FIN DE MENU TOOLBAR -----
+
+
         self.letrero1 = QLabel()
         self.letrero1.setText("Usuarios Registrados")
         self.letrero1.setFont(QFont("Andale Mono", 20))
@@ -86,9 +114,13 @@ class Ventana3(QMainWindow):
         for u in self.usuarios:
 
             self.tabla.setItem(self.contador, 0, QTableWidgetItem(u.nombreCompleto))
+            #Hacemos que el nombre no se pueda editar
+            self.tabla.item(self.contador, 0).setFlags(Qt.ItemIsEnabled)
             self.tabla.setItem(self.contador, 1, QTableWidgetItem(u.usuario))
             self.tabla.setItem(self.contador, 2, QTableWidgetItem(u.password))
             self.tabla.setItem(self.contador, 3, QTableWidgetItem(u.documento))
+            #Hacemos que el documento nose pueda editar
+            self.tabla.item(self.contador, 3).setFlags(Qt.ItemIsEnabled)
             self.tabla.setItem(self.contador, 4, QTableWidgetItem(u.correo))
             self.tabla.setItem(self.contador, 5, QTableWidgetItem(u.pregunta1))
             self.tabla.setItem(self.contador, 6, QTableWidgetItem(u.respuesta1))
@@ -116,6 +148,14 @@ class Ventana3(QMainWindow):
     def metodo_accionVolver(self):
         self.hide()
         self.ventanaAnterior.show()
+
+    def accion_delete(self):
+        pass
+    def accion_add(self):
+        pass
+    def accion_insert(self):
+        pass
+    
 
 
 if __name__ == '__main__':
