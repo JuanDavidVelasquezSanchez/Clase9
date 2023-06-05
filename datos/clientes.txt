@@ -1,2 +1,1 @@
-Samuel Bedoya;samuel;samuelito;1234564342;samuelito@gmail.com;altura;2;peso;90;raza;aria
-Samuel Pelaez Torres;Samuel123;12345678;1033177728;samuelpelaeztorres@gmail.com;Pais donde nacio mi abuela materna ;Argentina ;Departamento donde naci ;Antioquia;Cuantas mascotas he tenido hasta el momento ;4
+Samuel Pelaez Torres;Samuel1234;12345678;1033177728;samuelpelaeztorres@gmail.com;Pais donde nacio mi abuela materna ;Colombia;Departamento donde naci ;Antioquia;Cuantas mascotas he tenido hasta el momento ;4SamuSamuSamu;Sami;12345;123456789;samu@gmail.com;Hola ;si;Hola ;no;Hola;zi
